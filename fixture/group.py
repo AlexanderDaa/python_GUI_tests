@@ -1,4 +1,4 @@
-
+import pywinauto
 
 class GroupHelper:
 
@@ -23,6 +23,24 @@ class GroupHelper:
         input.type_keys("\n")
         self.close_group_editor()
 
+
+    def del_group(self, group_name):
+        self.open_group_editor()
+        #выбираем группу
+        self.select_group(group_name)
+        #нажимаем делит
+        self.group_editor.window(auto_id="uxDeleteAddressButton").click()
+        self.delete_gr=self.app.application.window(title="Delete group")
+        self.delete_gr.wait("visible")
+        #отмечаем опцию о неудалении контактов
+        self.delete_gr.window(auto_id="uxDeleteGroupsOnlyRadioButton").click()
+        self.delete_gr.window(auto_id="uxOKAddressButton").click()
+        self.close_group_editor()
+
+
+    def select_group(self,group_name):
+        item = "u'"+group_name+"'"
+        self.group_editor.window(auto_id="uxAddressTreeView").get_item([u'Contact groups', item]).click()
 
 
     def open_group_editor(self):
